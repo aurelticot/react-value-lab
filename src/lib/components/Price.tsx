@@ -1,5 +1,5 @@
-import React from 'react'
-import { Value } from './Value';
+import React from "react";
+import { Value } from "./Value";
 
 interface Props {
   value: number;
@@ -19,18 +19,20 @@ export const Price: React.FunctionComponent<Props> = (props) => {
     unit,
     displayMutedDecimals = false,
     highlightDiff = true,
-    hideUnit = false
+    hideUnit = false,
   } = props;
 
-  return <Value
-    value={value}
-    decimals={decimals}
-    displayMutedDecimals={displayMutedDecimals}
-    hideUnit={hideUnit}
-    highlightDiff={highlightDiff}
-    previousValue={previousValue}
-    privacyMode={false}
-    smallDecimals={true}
-    unit={unit}
-  />;
-}
+  return (
+    <Value
+      value={value}
+      decimals={decimals}
+      displayMutedDecimals={displayMutedDecimals}
+      hideUnit={hideUnit}
+      highlightDiff={highlightDiff}
+      previousValue={previousValue}
+      privacyMode={false}
+      smallDecimals={true}
+      unit={unit}
+    />
+  );
+};

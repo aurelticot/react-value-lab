@@ -1,6 +1,6 @@
-import React from 'react'
-import { getComparisonDiffIndex, convertValueToString } from '../utils'
-import { MAX_NB_DECIMALS } from "../constants"
+import React from "react";
+import { getComparisonDiffIndex, convertValueToString } from "../utils";
+import { MAX_NB_DECIMALS } from "../constants";
 
 interface Props {
   value: number;
@@ -24,34 +24,50 @@ export const Value: React.FunctionComponent<Props> = (props) => {
     displayMutedDecimals = false,
     smallDecimals = false,
     highlightDiff = false,
-    hideUnit = false
+    hideUnit = false,
   } = props;
 
   const valueString = convertValueToString(value, decimals);
 
   const nbIntegers = valueString.length - decimals;
-  const nbDecimals = decimals <= MAX_NB_DECIMALS ? (decimals < 0 ? 0 : decimals) : MAX_NB_DECIMALS;
+  const nbDecimals =
+    decimals <= MAX_NB_DECIMALS
+      ? decimals < 0
+        ? 0
+        : decimals
+      : MAX_NB_DECIMALS;
 
   const valueInteger = valueString.slice(0, nbIntegers);
-  const valueDecimals = valueString.slice(nbIntegers, valueString.length - (decimals - MAX_NB_DECIMALS));
+  const valueDecimals = valueString.slice(
+    nbIntegers,
+    valueString.length - (decimals - MAX_NB_DECIMALS)
+  );
 
-  let diffColor = "inherit"
+  let diffColor = "inherit";
   let neutralValueInteger = valueInteger;
-  let changedValueInteger = '';
+  let changedValueInteger = "";
   let neutralValueDecimals = valueDecimals;
-  let changedValueDecimals = '';
+  let changedValueDecimals = "";
 
   if (highlightDiff && previousValue) {
-    diffColor = value > previousValue ? "#4caf50" : value < previousValue ? "#f44336" : "inherit";
+    diffColor =
+      value > previousValue
+        ? "#4caf50"
+        : value < previousValue
+        ? "#f44336"
+        : "inherit";
 
     const previousAmountString = convertValueToString(previousValue, decimals);
     let diffIndex = getComparisonDiffIndex(valueString, previousAmountString);
 
     neutralValueInteger = valueInteger.slice(0, diffIndex);
-    changedValueInteger = valueInteger.slice(diffIndex, valueInteger.length +1)
+    changedValueInteger = valueInteger.slice(
+      diffIndex,
+      valueInteger.length + 1
+    );
 
     if (diffIndex < nbIntegers) {
-      neutralValueDecimals = '';
+      neutralValueDecimals = "";
       changedValueDecimals = valueDecimals;
     } else {
       neutralValueDecimals = valueDecimals.slice(0, diffIndex - nbIntegers);
@@ -62,8 +78,14 @@ export const Value: React.FunctionComponent<Props> = (props) => {
   const mutedDecimals = String(10 ** (MAX_NB_DECIMALS - nbDecimals)).slice(1);
 
   return (
-    <span style={{fontFamily: "'Roboto Mono', monospace"}}>
-      <span style={privacyMode ? { color: 'transparent', textShadow: '0 0 0.8rem rgba(0,0,0,0.5)' } : {}}>
+    <span style={{ fontFamily: "'Roboto Mono', monospace" }}>
+      <span
+        style={
+          privacyMode
+            ? { color: "transparent", textShadow: "0 0 0.8rem rgba(0,0,0,0.5)" }
+            : {}
+        }
+      >
         <span>
           <span>
             {neutralValueInteger}
@@ -77,15 +99,15 @@ export const Value: React.FunctionComponent<Props> = (props) => {
             <span style={privacyMode ? {} : { color: diffColor }}>
               {changedValueDecimals}
             </span>
-            {displayMutedDecimals &&
-              <span style={privacyMode ? {} : { color: '#adadad' }}>
+            {displayMutedDecimals && (
+              <span style={privacyMode ? {} : { color: "#adadad" }}>
                 {mutedDecimals}
               </span>
-            }
+            )}
           </span>
         </span>
       </span>
       {!hideUnit && unit && <span>{` ${unit}`}</span>}
     </span>
-  )
-}
+  );
+};
